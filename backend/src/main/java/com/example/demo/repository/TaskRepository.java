@@ -16,9 +16,9 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
                         SELECT t FROM Task t
                         WHERE
                         (:searchTerm IS NULL OR
-                        LOWER(t.name) LIKE CONCAT('%', LOWER(:searchTerm), '%') OR
-                        LOWER(t.description) LIKE CONCAT('%', LOWER(:searchTerm), '%') OR
-                        LOWER(t.notes) LIKE CONCAT('%', LOWER(:searchTerm), '%'))
+                        LOWER(t.name) LIKE LOWER(CONCAT('%', :searchTerm, '%')) OR
+                        LOWER(t.description) LIKE LOWER(CONCAT('%', :searchTerm, '%')) OR
+                        LOWER(t.notes) LIKE LOWER(CONCAT('%', :searchTerm, '%')))
                         AND
                         (:status IS NULL OR t.status = :status)
                         """)
