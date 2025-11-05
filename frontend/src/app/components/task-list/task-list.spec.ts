@@ -1,7 +1,7 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { TaskService } from '../../services/task';
+import { TaskService } from '../../services/task.service';
 import { Task, PageResponse } from '../../models/task';
 import { TaskStatus, TaskStatusLabels } from '../../models/task-status';
 import { TaskItemComponent } from '../task-item/task-item';

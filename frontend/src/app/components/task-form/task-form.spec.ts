@@ -1,7 +1,7 @@
 import { Component, Output, EventEmitter, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { TaskService } from '../../services/task';
+import { TaskService } from '../../services/task.service';
 import { Task, TaskRequest } from '../../models/task';
 
 @Component({
