@@ -25,7 +25,8 @@ export class TaskListComponent {
     this.loading.set(true);
     this.taskService.getAllTasks().subscribe({
       next: (data) => {
-        this.tasks.set(data);
+        // ✅ FIX: Extract array from PageResponse
+        this.tasks.set(data.content || []); 
         this.loading.set(false);
       },
       error: () => {

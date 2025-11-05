@@ -5,8 +5,8 @@ import {
   Task,
   TaskRequest,
   TaskUpdateRequest,
-  StatusUpdateRequest,
-  PageResponse,
+    PageResponse,
+  StatusUpdateRequest
 } from '../models/task';
 import { TaskStatus } from '../models/task-status';
 

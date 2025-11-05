@@ -1,4 +1,5 @@
-import { TaskStatus } from './task-status'; 
+// frontend/src/app/models/task.ts
+import { TaskStatus } from './task-status';
 
 export interface Task {
   id: number;
@@ -6,6 +7,8 @@ export interface Task {
   description?: string;
   notes?: string;
   status: TaskStatus;
+  createdTime?: Date;
+  updatedTime?: Date;
 }
 
 export interface TaskRequest {
@@ -19,4 +22,16 @@ export interface TaskUpdateRequest {
   description?: string;
   notes?: string;
   status?: TaskStatus;
+}
+
+export interface StatusUpdateRequest {
+  status: TaskStatus;
+}
+
+export interface PageResponse<T> {
+  content: T[];
+  totalElements: number;
+  totalPages: number;
+  size: number;
+  number: number;
 }
