@@ -1,35 +1,35 @@
 <form (ngSubmit)="addTask()" #taskForm="ngForm" class="mb-4">
-  <div class="mb-3">
-    <input
-      type="text"
-      class="form-control"
-      placeholder="Task name"
-      [(ngModel)]="task.name"
-      name="name"
-      required
-      #name="ngModel"
-    />
-    <div *ngIf="name.invalid && (name.dirty || name.touched)" class="text-danger mt-1">
-      Name is required.
+    <div class="mb-3">
+        <input
+        type="text"
+        class="form-control"
+        placeholder="Task name"
+        [(ngModel)]="task.name"
+        name="name"
+        required
+        #name="ngModel"
+        />
+        <div *ngIf="name.invalid && (name.dirty || name.touched)" class="text-danger mt-1">
+        Name is required.
+        </div>
     </div>
-  </div>
-  <div class="mb-3">
-    <textarea
-      class="form-control"
-      placeholder="Description"
-      [(ngModel)]="task.description"
-      name="description"
-    ></textarea>
-  </div>
-  <div class="mb-3">
-    <textarea
-      class="form-control"
-      placeholder="Notes"
-      [(ngModel)]="task.notes"
-      name="notes"
-    ></textarea>
-  </div>
-  <button type="submit" class="btn btn-primary w-100" [disabled]="taskForm.invalid">
-    Add Task
-  </button>
+    <div class="mb-3">
+        <textarea
+        class="form-control"
+        placeholder="Description"
+        [(ngModel)]="task.description"
+        name="description"
+        ></textarea>
+    </div>
+    <div class="mb-3">
+        <textarea
+        class="form-control"
+        placeholder="Notes"
+        [(ngModel)]="task.notes"
+        name="notes"
+        ></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary w-100" [disabled]="taskForm.invalid">
+        Add Task
+    </button>
 </form>

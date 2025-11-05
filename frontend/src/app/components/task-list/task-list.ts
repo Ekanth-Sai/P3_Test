@@ -17,16 +17,13 @@ export class TaskListComponent implements OnInit {
   protected loading = signal(false);
   protected error = signal<string | null>(null);
 
-  // Pagination
   protected currentPage = signal(0);
   protected totalPages = signal(0);
   protected totalElements = signal(0);
 
-  // Sorting
   protected sortBy = signal('updatedTime');
   protected sortDir = signal('desc');
 
-  // Search
   protected searchTerm = signal('');
 
   constructor(private taskService: TaskService) {}
@@ -63,7 +60,6 @@ export class TaskListComponent implements OnInit {
     this.loadTasks();
   }
 
-  // Pagination methods
   nextPage(): void {
     if (this.currentPage() < this.totalPages() - 1) {
       this.currentPage.set(this.currentPage() + 1);
@@ -78,7 +74,6 @@ export class TaskListComponent implements OnInit {
     }
   }
 
-  // Sorting method
   onSortChange(event: Event): void {
     const target = event.target as HTMLSelectElement;
     const value = target.value.split(',');
@@ -87,11 +82,10 @@ export class TaskListComponent implements OnInit {
     this.loadTasks();
   }
 
-  // Search method
   onSearch(event: Event): void {
     const target = event.target as HTMLInputElement;
     this.searchTerm.set(target.value);
-    this.currentPage.set(0); // Reset to first page
+    this.currentPage.set(0); 
     this.loadTasks();
   }
 }

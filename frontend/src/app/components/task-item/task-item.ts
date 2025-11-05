@@ -27,7 +27,6 @@ export class TaskItemComponent implements OnInit {
   protected readonly TaskStatus = TaskStatus;
   protected readonly TaskStatusLabels = TaskStatusLabels;
 
-  // Edit mode
   protected isEditing = signal(false);
   protected editableTask!: TaskUpdateRequest;
 
@@ -44,7 +43,7 @@ export class TaskItemComponent implements OnInit {
   toggleEdit(): void {
     this.isEditing.set(!this.isEditing());
     if (!this.isEditing()) {
-      this.resetEditableTask(); // Reset on cancel
+      this.resetEditableTask(); 
     }
   }
 

@@ -1,53 +1,53 @@
 <div class="row mb-3">
-  <div class="col-md-6">
-    <input
-      type="text"
-      class="form-control"
-      placeholder="Search..."
-      (input)="onSearch($event)"
-    />
-  </div>
-  <div class="col-md-6">
-    <select class="form-select" (change)="onSortChange($event)">
-      <option value="updatedTime,desc">Last Updated (Newest)</option>
-      <option value="updatedTime,asc">Last Updated (Oldest)</option>
-      <option value="status,asc">Status (A-Z)</option>
-      <option value="status,desc">Status (Z-A)</option>
-    </select>
-  </div>
-</div>
+    <div class="col-md-6">
+        <input
+        type="text"
+        class="form-control"
+        placeholder="Search..."
+        (input)="onSearch($event)"
+        />
+    </div>
+    <div class="col-md-6">
+        <select class="form-select" (change)="onSortChange($event)">
+        <option value="updatedTime,desc">Last Updated (Newest)</option>
+        <option value="updatedTime,asc">Last Updated (Oldest)</option>
+        <option value="status,asc">Status (A-Z)</option>
+        <option value="status,desc">Status (Z-A)</option>
+        </select>
+    </div>
+    </div>
 
-<div *ngIf="loading()" class="text-center">
-  <div class="spinner-border" role="status">
-    <span class="visually-hidden">Loading...</span>
-  </div>
-</div>
+    <div *ngIf="loading()" class="text-center">
+    <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+    </div>
 
-<div *ngIf="error()" class="alert alert-danger">{{ error() }}</div>
+    <div *ngIf="error()" class="alert alert-danger">{{ error() }}</div>
 
-<div *ngIf="!loading() && tasks().length === 0" class="text-center text-muted">
-  No tasks found.
-</div>
+    <div *ngIf="!loading() && tasks().length === 0" class="text-center text-muted">
+    No tasks found.
+    </div>
 
-<div class="list-group">
-  <app-task-item
-    *ngFor="let task of tasks()"
-    [task]="task"
-    (taskUpdated)="onTaskUpdated()"
-    (taskDeleted)="onTaskDeleted()"
-  ></app-task-item>
-</div>
+    <div class="list-group">
+    <app-task-item
+        *ngFor="let task of tasks()"
+        [task]="task"
+        (taskUpdated)="onTaskUpdated()"
+        (taskDeleted)="onTaskDeleted()"
+    ></app-task-item>
+    </div>
 
-<div class="d-flex justify-content-between align-items-center mt-3">
-  <button class="btn btn-secondary" (click)="prevPage()" [disabled]="currentPage() === 0">
-    Previous
-  </button>
-  <span>Page {{ currentPage() + 1 }} of {{ totalPages() }}</span>
-  <button
-    class="btn btn-secondary"
-    (click)="nextPage()"
-    [disabled]="currentPage() === totalPages() - 1"
-  >
-    Next
-  </button>
+    <div class="d-flex justify-content-between align-items-center mt-3">
+    <button class="btn btn-secondary" (click)="prevPage()" [disabled]="currentPage() === 0">
+        Previous
+    </button>
+    <span>Page {{ currentPage() + 1 }} of {{ totalPages() }}</span>
+    <button
+        class="btn btn-secondary"
+        (click)="nextPage()"
+        [disabled]="currentPage() === totalPages() - 1"
+    >
+        Next
+    </button>
 </div>
