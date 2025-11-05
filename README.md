@@ -11,7 +11,7 @@ This app allows users to **create, read, update, and delete (CRUD)** tasks with 
 
 ## Project Structure
 
-Directory structure:
+```Directory structure:
 └── ekanth-sai-p3_test/
     ├── backend/
     │   ├── mvnw
@@ -100,8 +100,7 @@ Directory structure:
                     ├── task.service.ts
                     ├── task.spec.ts
                     └── task.ts
-
-
+```
 ---
 
 ## Backend Setup (Spring Boot + PostgreSQL)
