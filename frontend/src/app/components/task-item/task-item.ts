@@ -1,4 +1,3 @@
-// frontend/src/app/components/task-item/task-item.ts
 import { Component, Input, Output, EventEmitter, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -18,9 +17,6 @@ export class TaskItemComponent {
   @Output() taskUpdated = new EventEmitter<Task>();
   @Output() taskDeleted = new EventEmitter<number>();
 
-  protected isEditing = signal(false);
-  protected isExpanded = signal(false);
-  protected editForm = signal<TaskUpdateRequest>({});
   protected loading = signal(false);
   protected error = signal<string | null>(null);
 
@@ -29,6 +25,33 @@ export class TaskItemComponent {
 
   constructor(private taskService: TaskService) {}
 
-  // add methods to change status, save updates, delete task, etc.
-  // (You can re-use logic from your .spec.ts version if you want full behavior)
+  updateStatus(): void {
+    const next = getNextStatus(this.task.status);
+    this.loading.set(true);
+
+    this.taskService.updateTaskStatus(this.task.id, next).subscribe({
+      next: (updated) => {
+        this.taskUpdated.emit(updated);
+        this.loading.set(false);
+      },
+      error: () => {
+        this.error.set('Failed to update status');
+        this.loading.set(false);
+      },
+    });
+  }
+
+  deleteTask(): void {
+    this.loading.set(true);
+    this.taskService.deleteTask(this.task.id).subscribe({
+      next: () => {
+        this.taskDeleted.emit(this.task.id);
+        this.loading.set(false);
+      },
+      error: () => {
+        this.error.set('Failed to delete task');
+        this.loading.set(false);
+      },
+    });
+  }
 }

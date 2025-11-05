@@ -1,1 +1,9 @@
-<p>task-item works!</p>
+<div class="task-card">
+    <h3>{{ task.name }}</h3>
+    <p>{{ task.description }}</p>
+    <small>Status: {{ task.status }}</small>
+    <br />
+    <button (click)="updateStatus()">Next Status</button>
+    <button (click)="deleteTask()">Delete</button>
+</div>
+  

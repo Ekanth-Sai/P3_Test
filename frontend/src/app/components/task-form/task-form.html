@@ -1,1 +1,6 @@
-<p>task-form works!</p>
+<form (ngSubmit)="addTask()" class="task-form">
+    <input type="text" placeholder="Task name" [(ngModel)]="task.name" name="name" required />
+    <input type="text" placeholder="Description" [(ngModel)]="task.description" name="description" />
+    <input type="text" placeholder="Notes" [(ngModel)]="task.notes" name="notes" />
+    <button type="submit">Add Task</button>
+</form>  

@@ -1,46 +1,39 @@
-// frontend/src/app/components/task-list/task-list.ts
-import { Component, signal } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TaskService } from '../../services/task.service';
-import { Task } from '../../models/task';
-import { TaskItemComponent } from '../task-item/task-item';
 
 @Component({
   selector: 'app-task-list',
   standalone: true,
-  imports: [CommonModule, TaskItemComponent],
+  imports: [CommonModule],
   templateUrl: './task-list.html',
-  styleUrls: ['./task-list.css']
+  styleUrls: ['./task-list.css'],
 })
-export class TaskListComponent {
-  protected tasks = signal<Task[]>([]);
-  protected loading = signal(false);
-  protected error = signal<string | null>(null);
+export class TaskListComponent implements OnInit {
+  tasks: any[] = [];
 
-  constructor(private taskService: TaskService) {
+  constructor(private taskService: TaskService) {}
+
+  ngOnInit() {
     this.loadTasks();
   }
 
-  loadTasks(): void {
-    this.loading.set(true);
-    this.taskService.getAllTasks().subscribe({
-      next: (data) => {
-        // ✅ FIX: Extract array from PageResponse
-        this.tasks.set(data.content || []); 
-        this.loading.set(false);
-      },
-      error: () => {
-        this.error.set('Failed to load tasks.');
-        this.loading.set(false);
-      },
-    });
+  loadTasks() {
+    this.taskService.getAllTasks().subscribe((res) => (this.tasks = res.content || []));
   }
 
-  onTaskUpdated(): void {
-    this.loadTasks();
+  updateStatus(task: any) {
+    const nextStatusMap: any = {
+      PENDING: 'TODO',
+      TODO: 'IN_PROGRESS',
+      IN_PROGRESS: 'COMPLETED',
+    };
+
+    const newStatus = nextStatusMap[task.status] || 'COMPLETED';
+    this.taskService.updateStatus(task.id, newStatus).subscribe(() => this.loadTasks());
   }
 
-  onTaskDeleted(): void {
-    this.loadTasks();
+  deleteTask(id: number) {
+    this.taskService.deleteTask(id).subscribe(() => this.loadTasks());
   }
 }
