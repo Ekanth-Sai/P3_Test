@@ -1,39 +1,97 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TaskService } from '../../services/task.service';
+import { Task } from '../../models/task';
+import { TaskItemComponent } from '../task-item/task-item';
+import { PageResponse } from '../../models/task';
 
 @Component({
   selector: 'app-task-list',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, TaskItemComponent],
   templateUrl: './task-list.html',
   styleUrls: ['./task-list.css'],
 })
 export class TaskListComponent implements OnInit {
-  tasks: any[] = [];
+  protected tasks = signal<Task[]>([]);
+  protected loading = signal(false);
+  protected error = signal<string | null>(null);
+
+  // Pagination
+  protected currentPage = signal(0);
+  protected totalPages = signal(0);
+  protected totalElements = signal(0);
+
+  // Sorting
+  protected sortBy = signal('updatedTime');
+  protected sortDir = signal('desc');
+
+  // Search
+  protected searchTerm = signal('');
 
   constructor(private taskService: TaskService) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.loadTasks();
   }
 
-  loadTasks() {
-    this.taskService.getAllTasks().subscribe((res) => (this.tasks = res.content || []));
+  loadTasks(): void {
+    this.loading.set(true);
+    const sort = `${this.sortBy()},${this.sortDir()}`;
+
+    this.taskService
+      .getAllTasks(this.currentPage(), 10, sort, this.searchTerm())
+      .subscribe({
+        next: (response: PageResponse<Task>) => {
+          this.tasks.set(response.content);
+          this.totalPages.set(response.totalPages);
+          this.totalElements.set(response.totalElements);
+          this.loading.set(false);
+        },
+        error: () => {
+          this.error.set('Failed to load tasks.');
+          this.loading.set(false);
+        },
+      });
   }
 
-  updateStatus(task: any) {
-    const nextStatusMap: any = {
-      PENDING: 'TODO',
-      TODO: 'IN_PROGRESS',
-      IN_PROGRESS: 'COMPLETED',
-    };
-
-    const newStatus = nextStatusMap[task.status] || 'COMPLETED';
-    this.taskService.updateStatus(task.id, newStatus).subscribe(() => this.loadTasks());
+  onTaskUpdated(): void {
+    this.loadTasks();
   }
 
-  deleteTask(id: number) {
-    this.taskService.deleteTask(id).subscribe(() => this.loadTasks());
+  onTaskDeleted(): void {
+    this.loadTasks();
+  }
+
+  // Pagination methods
+  nextPage(): void {
+    if (this.currentPage() < this.totalPages() - 1) {
+      this.currentPage.set(this.currentPage() + 1);
+      this.loadTasks();
+    }
+  }
+
+  prevPage(): void {
+    if (this.currentPage() > 0) {
+      this.currentPage.set(this.currentPage() - 1);
+      this.loadTasks();
+    }
+  }
+
+  // Sorting method
+  onSortChange(event: Event): void {
+    const target = event.target as HTMLSelectElement;
+    const value = target.value.split(',');
+    this.sortBy.set(value[0]);
+    this.sortDir.set(value[1]);
+    this.loadTasks();
+  }
+
+  // Search method
+  onSearch(event: Event): void {
+    const target = event.target as HTMLInputElement;
+    this.searchTerm.set(target.value);
+    this.currentPage.set(0); // Reset to first page
+    this.loadTasks();
   }
 }

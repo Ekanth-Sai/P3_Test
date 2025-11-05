@@ -1,6 +1,35 @@
-<form (ngSubmit)="addTask()" class="task-form">
-    <input type="text" placeholder="Task name" [(ngModel)]="task.name" name="name" required />
-    <input type="text" placeholder="Description" [(ngModel)]="task.description" name="description" />
-    <input type="text" placeholder="Notes" [(ngModel)]="task.notes" name="notes" />
-    <button type="submit">Add Task</button>
-</form>  
+<form (ngSubmit)="addTask()" #taskForm="ngForm" class="mb-4">
+  <div class="mb-3">
+    <input
+      type="text"
+      class="form-control"
+      placeholder="Task name"
+      [(ngModel)]="task.name"
+      name="name"
+      required
+      #name="ngModel"
+    />
+    <div *ngIf="name.invalid && (name.dirty || name.touched)" class="text-danger mt-1">
+      Name is required.
+    </div>
+  </div>
+  <div class="mb-3">
+    <textarea
+      class="form-control"
+      placeholder="Description"
+      [(ngModel)]="task.description"
+      name="description"
+    ></textarea>
+  </div>
+  <div class="mb-3">
+    <textarea
+      class="form-control"
+      placeholder="Notes"
+      [(ngModel)]="task.notes"
+      name="notes"
+    ></textarea>
+  </div>
+  <button type="submit" class="btn btn-primary w-100" [disabled]="taskForm.invalid">
+    Add Task
+  </button>
+</form>

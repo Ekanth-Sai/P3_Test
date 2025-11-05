@@ -1,5 +1,13 @@
-<div class="container">
+<header class="bg-dark text-white text-center p-3 mb-4">
   <h1>Task Manager</h1>
-  <app-task-form (taskCreated)="onTaskCreated($event)"></app-task-form>
-  <app-task-list></app-task-list>
-</div>
+</header>
+
+<main class="container">
+  <div class="row">
+    <div class="col-md-8 offset-md-2">
+      <app-task-form (taskCreated)="onTaskCreated($event)"></app-task-form>
+      <hr class="my-4" />
+      <app-task-list></app-task-list>
+    </div>
+  </div>
+</main>

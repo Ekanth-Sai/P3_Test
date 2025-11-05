@@ -11,15 +11,19 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TaskRepository extends JpaRepository<Task, Long> {
-        @Query("SELECT t FROM Task t WHERE " +
-        "(:searchTerm IS NULL OR " +
-        "LOWER(t.name) LIKE LOWER(CONCAT('%', :searchTerm, '%')) OR " +
-        "LOWER(t.description) LIKE LOWER(CONCAT('%', :searchTerm, '%')) OR " +
-        "LOWER(t.notes) LIKE LOWER(CONCAT('%', :searchTerm, '%'))) AND " +
-                        "(:status IS NULL OR t.status = :status)")
-                        
+
+        @Query("""
+                        SELECT t FROM Task t
+                        WHERE
+                        (:searchTerm IS NULL OR
+                        LOWER(t.name) LIKE CONCAT('%', LOWER(:searchTerm), '%') OR
+                        LOWER(t.description) LIKE CONCAT('%', LOWER(:searchTerm), '%') OR
+                        LOWER(t.notes) LIKE CONCAT('%', LOWER(:searchTerm), '%'))
+                        AND
+                        (:status IS NULL OR t.status = :status)
+                        """)
         Page<Task> findBySearchCriteria(
-        @Param("searchTerm") String searchTerm,
-        @Param("status") TaskStatus status,
-        Pageable pageable);
+                        @Param("searchTerm") String searchTerm,
+                        @Param("status") TaskStatus status,
+                        Pageable pageable);
 }
